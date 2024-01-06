@@ -1,5 +1,7 @@
+import { Toaster } from "react-hot-toast";
+
 const Providers = ({ children }) => {
-  return <div>{children}</div>;
+  return <div> <Toaster />{children}</div>;
 };
 
 export default Providers;
