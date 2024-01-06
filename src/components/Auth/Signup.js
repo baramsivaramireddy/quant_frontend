@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form"
-import ErrorMessage from "../ErrorMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 import { useState } from "react";
 import toast from "react-hot-toast";
 const SignUp = () => {
