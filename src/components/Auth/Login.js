@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form"
 import ErrorMessage from "@/components/ErrorMessage";
 import { useState } from "react";
 import toast from "react-hot-toast";
-
 import Link from "next/link";
-
+import axiosInstance from '@/utils/axiosInstance'
 
 const Login = () =>{
     const [IsSendingData, setIsSendingData] = useState(false)
@@ -14,6 +13,7 @@ const Login = () =>{
       register,
       handleSubmit,
       formState: { errors },
+      reset
     } = useForm({
       defaultValues:{
         email:'',
@@ -23,15 +23,28 @@ const Login = () =>{
   
     const onSubmit = async (values) =>{
       setIsSendingData(true)
+
+        // converting email to smallcase
+        values.email = values.email.toLowerCase()
   
         try{
-  
-          await new Promise((resolve,reject) =>{
-  
-  
-            setTimeout(() =>{ resolve()} , 3000)
-          })
-          toast.success('loged in')
+            let response = await axiosInstance.post('/api/user/login',values)
+            
+            if (response.status == 200) {
+              // redirect user
+              toast.success('loged in ')
+            }
+            else if (response.status == 401){
+              toast.error('password invalid')
+              reset()
+            }
+            else if (response.status ==   404){
+              toast.error('user does not exist')
+              reset()
+            }
+            else {
+              toast.error("Internal server error")
+            }
         }
         catch(err){
           toast.error('something went wrong')

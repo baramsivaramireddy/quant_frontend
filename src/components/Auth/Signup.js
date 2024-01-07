@@ -4,12 +4,14 @@ import { useForm } from "react-hook-form"
 import ErrorMessage from "@/components/ErrorMessage";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import axiosInstance from '@/utils/axiosInstance'
 const SignUp = () => {
    const [IsSendingData, setIsSendingData] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     defaultValues:{
       email:'',
@@ -22,13 +24,25 @@ const SignUp = () => {
     setIsSendingData(true)
 
       try{
-
-        await new Promise((resolve,reject) =>{
-
-
-          setTimeout(() =>{ resolve()} , 3000)
-        })
-        toast.success('created account successfully')
+        // converting email to lowercase
+        values.email = values.email.toLowerCase()
+  
+        let response = await axiosInstance.post('/api/user/signup',values)
+            
+        if (response.status == 201) {
+          // redirect user
+          toast.success('created account successfully')
+        }
+        else if (response.status == 409){
+          toast.error('email already exist .')
+          reset()
+        }
+       
+        else {
+          toast.error("Internal server error")
+          reset()
+        }
+     
       }
       catch(err){
         toast.error('something went wrong')
