@@ -2,13 +2,16 @@
 
 import { useForm } from "react-hook-form"
 import ErrorMessage from "@/components/ErrorMessage";
-import { useState } from "react";
+import { useState  , useContext} from "react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import axiosInstance from '@/utils/axiosInstance'
-
+import { AuthContext } from "@/utils/context";
+import  {useRouter} from 'next/navigation'
 const Login = () =>{
     const [IsSendingData, setIsSendingData] = useState(false)
+    const {login} = useContext(AuthContext)
+    const router = useRouter()
     const {
       register,
       handleSubmit,
@@ -32,7 +35,9 @@ const Login = () =>{
             
             if (response.status == 200) {
               // redirect user
-              toast.success('loged in ')
+             // saving token to webstorage and updating auth  context
+              login(response.data.token)
+              router.replace('/')
             }
             else if (response.status == 401){
               toast.error('password invalid')

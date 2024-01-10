@@ -1,6 +1,6 @@
 import  {createContext} from 'react';
 
-const Auth = createContext(null)
+const AuthContext = createContext(null)
 export  {
-    Auth
+    AuthContext
 }

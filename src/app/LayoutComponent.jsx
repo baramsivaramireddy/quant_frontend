@@ -1,6 +1,9 @@
+"use client"
+import useAuth from "@/hooks/useAuth";
 import Header from "@/components/Header";
 
 const LayoutComponent = ({ children }) => {
+  console.log(useAuth())
   return (
     <div className=" flex flex-col h-screen ">
       <header >

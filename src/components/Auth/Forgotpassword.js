@@ -5,13 +5,17 @@ import { useForm } from "react-hook-form"
 import ErrorMessage from "@/components/ErrorMessage";
 import { useState } from "react";
 import toast from "react-hot-toast";
-
+import axiosInstance from '@/utils/axiosInstance'
+import { useRouter } from "next/navigation";
 const ForgotPassword  = ()=>{
+
     const [IsSendingData, setIsSendingData] = useState(false)
+    const router = useRouter()
     const {
       register,
       handleSubmit,
       formState: { errors },
+      reset
     } = useForm({
       defaultValues:{
         email:''
@@ -22,12 +26,26 @@ const ForgotPassword  = ()=>{
     
           try{
     
-            await new Promise((resolve,reject) =>{
-    
-    
-              setTimeout(() =>{ resolve()} , 3000)
-            })
-            toast.success(' OTP sent  successfully')
+            let response = await axiosInstance.post('/api/user/forgotpassword' , values)
+
+            if (response.status == 200){
+
+              toast.success('otp sent successfully')
+              router.replace(`/changepassword/${values.email}`)
+            }
+            else if ( response.status == 404) {
+              toast.error('user does not exist')
+              reset()
+            }
+            else if (response.status == 422){
+              toast.error('invalid data')
+              reset()
+            }
+            else{
+              toast.error('internal server error')
+              reset()
+            }
+           
           }
           catch(err){
             toast.error('something went wrong')
@@ -38,7 +56,12 @@ const ForgotPassword  = ()=>{
   
     return (
         <div>
-                <RenderUi register={register} onSubmit={onSubmit} IsSendingData={IsSendingData} handleSubmit={handleSubmit} errors={errors} />
+                <RenderUi 
+                register={register} 
+                onSubmit={onSubmit} 
+                IsSendingData={IsSendingData} 
+                handleSubmit={handleSubmit} 
+                errors={errors} />
         </div>
     )
 }
@@ -56,12 +79,12 @@ const RenderUi = (props) => {
   
             
               <div>
-                  <input type="email" className="outline-1 outline-gray-200 rounded p-2 outline-none hover:outline hover:outline-black hover:outline-1 focus:outline focus:outline-1 focus:outline-blue-500" placeholder="Enter mail" />
+                  <input type="email" {...register('email')} className="outline-1 outline-gray-200 rounded p-2 outline-none hover:outline hover:outline-black hover:outline-1 focus:outline focus:outline-1 focus:outline-blue-500" placeholder="Enter mail" />
                   <ErrorMessage error={errors?.email} Field='email' type="required" />
               </div>
               
               <div className=" bg-blue-500 text-white py-3 px-2 rounded-full text-center font-semibold hover:bg-blue-700">
-                  <button type="submit" > {IsSendingData?"sending OTP":"Get OTP"}</button>
+                  <button  disabled={IsSendingData} type="submit" > {IsSendingData?"sending OTP":"Get OTP"}</button>
               </div>
           </form>
       </div>
