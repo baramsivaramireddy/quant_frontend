@@ -17,7 +17,7 @@ const AuthProvider = ({children}) =>{
     const login = useCallback((token) =>{
         setToken(token)
         setUserToken(token)
-        console.log('hello')
+      
     },[])
     const logout = useCallback(()=>{
         removeToken()
