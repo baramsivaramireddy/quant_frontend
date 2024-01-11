@@ -18,7 +18,7 @@ const AuthWrapper = ({allowedRoles, children}) =>{
             <p> you need to login <Link href={'/login'}> click here</Link> to login </p>
         </>)
     }
-    console.log(userToken)
+  
     
     let userRoles = getRoles(userToken)
     let isPermitted = userRoles.some(role => {

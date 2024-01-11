@@ -36,8 +36,13 @@ const AuthProvider = ({children}) =>{
 }
 
 
+const useToken = () =>{
+
+    return useContext(AuthContext)['userToken']
+}
 export {
-    AuthProvider
+    AuthProvider,
+    useToken
 }
 
 const useAuth  = () =>{

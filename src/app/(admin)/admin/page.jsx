@@ -1,12 +1,11 @@
 'use client'
 import AuthWrapper from '@/components/Auth/AuthWrapper'
+import AdminPageComponent from './AdminPageComponent'
 const AdminPage = () =>{
 
     return (
         <AuthWrapper allowedRoles={['admin']}>
-            <div>
-                admin page
-            </div>
+            <AdminPageComponent />
         </AuthWrapper>
     )
 }

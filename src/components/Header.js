@@ -51,7 +51,7 @@ const SecondaryNavbar = (props) => {
             props.isMobileMenuOpen ? "" : "hidden "
           }  flex flex-col  justify-center  items-center  gap-5`}
         >
-          <div className="rounded-full w-7 h-7 bg-gray-200 "></div>
+          <button className="rounded-full w-7 h-7 bg-gray-200 " ></button>
           <div >
             {/* logout button */}
             <button onClick={logout}> logout </button>
