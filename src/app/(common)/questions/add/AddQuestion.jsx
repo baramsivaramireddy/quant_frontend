@@ -54,7 +54,9 @@ const AddQuestionComponet = () => {
         reset()
         toast.success('question created successfully')
       }
-
+      else{
+        toast.error('error occured while creating a question')
+      }
     }
     catch(err){
 
@@ -253,7 +255,7 @@ const SingleChoice = (props) => {
       ))}
       <div>
         <label className="block font-bold mb-2">Correct Option(s):</label>
-        <select {...register("correctOptions")} className="border p-2 rounded-md w-full">
+        <select {...register("correctOptions.0")} className="border p-2 rounded-md w-full">
           {options.map((option, index) => (
             <option key={index} value={option}>
               {option}
